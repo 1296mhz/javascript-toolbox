@@ -25,6 +25,8 @@ processed = iterate(data, function (val, i) {
 // THINK same returning type. Like "new list.constructor"
 
 function iterate(list, func) {
+	'use strict';
+
 	var i, res;
 
 	if ('length' in list && typeof list !== 'function') {
