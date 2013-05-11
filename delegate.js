@@ -7,24 +7,25 @@
 		console.info(this, arguments)
 	});
 */
-function delegate (el, event_name, test, handler) {
-	var hadler_wrapper;
+function delegate (handlerNode, eventName, handlerCondition, handler) {
+	var hadlerWrapper;
 
-	hadler_wrapper = function (event) {
-		var event = event || window.event,
-			target = event.target || event.srcElement;
+	hadlerWrapper = function (event) {
+		var target;
 
-		while ( target !== el ) {
-			if ( test(target) ) {
-				handler.call(el, event);
+		event = event || window.event;
+		target = event.target || event.srcElement;
+		while (target !== handlerNode) {
+			if (handlerCondition(target)) {
+				handler.call(target, event);
 			}
 			target = target.parentNode;
 		}
 	};
 
-	if (el.addEventListener) {
-		el.addEventListener(event_name, hadler_wrapper, false);
-	} else if (el.attachEvent) {
-		el.attachEvent('on' + event_name, hadler_wrapper);
+	if (handlerNode.addEventListener) {
+		handlerNode.addEventListener(eventName, hadlerWrapper, false);
+	} else if (handlerNode.attachEvent) {
+		handlerNode.attachEvent('on' + eventName, hadlerWrapper);
 	}
 }
